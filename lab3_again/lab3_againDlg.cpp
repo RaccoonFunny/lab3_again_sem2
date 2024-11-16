@@ -198,8 +198,7 @@ float dio(float a, float b, float accuracy) {
 
 float newton(float xStart, float accuracy, int maxI) {
 	float x = xStart;
-	for (int i = 0; i < maxI; ++i) {
-
+	for (int i = 0; i < maxI; i++) {
 
 		if (fabs(dfunc(x)) < accuracy) {
 			return -1;
@@ -228,7 +227,18 @@ void Clab3againDlg::OnBnClickedButton1()
 	int maxI = 666;
 
 	if (method) {
-		float xStart = (a + b) / 2; // Начальное приближение
+		float step = accuracy * 100.0f;
+		float xStart = a;
+		bool foundStart = false;
+
+		for (float x = a; x <= b; x += step) {
+			if (func(x) * func(x + step) <= 0) {
+				xStart = (x + (x + step)) / 2.0f;
+				foundStart = true;
+				break;
+			}
+		}
+
 		float result = newton(xStart, accuracy, maxI);
 
 		if (result != -1) {
